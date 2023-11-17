@@ -1,31 +1,39 @@
 import { FormEvent, useState } from "react"
-import { AccountForm } from "./AccountForm"
-import { AddressForm } from "./AddressForm"
+import { VideoLogisticsForm } from "./Forms/VideoLogisticsForm"
+import { AddonForm } from "./Forms/AddonForm"
 import { useMultistepForm } from "./useMultistepForm"
-import { UserForm } from "./UserForm"
+import { VideoDetails } from "./Forms/VideoDetails"
+import {VideoType} from "./Forms/SelectVideoType" 
+import { createClient } from '@supabase/supabase-js';
+import { VideoUploadForm } from "./Forms/VideoUpload"
+import {VideoPacingToneForm}from "./Forms/VideoPacingToneForm"
+
+
+
 
 type FormData = {
-  firstName: string
-  lastName: string
-  age: string
-  street: string
-  city: string
-  state: string
-  zip: string
-  email: string
-  password: string
+  VideoType:string
+  FootageLength: string
+  FootageSize: string
+  Addon: string
+  VideoTitle: string
+  PublishDate: string
+  FinalLength: string
+  VideoPace: string
+  VideoTone: string
+ 
 }
 
 const INITIAL_DATA: FormData = {
-  firstName: "",
-  lastName: "",
-  age: "",
-  street: "",
-  city: "",
-  state: "",
-  zip: "",
-  email: "",
-  password: "",
+  VideoType:"",
+  FootageLength: "",
+  FootageSize: "",
+  Addon: "",
+  VideoTitle: "",
+  PublishDate: "",
+  FinalLength: "",
+  VideoPace: "",
+  VideoTone: "",
 }
 
 function App() {
@@ -37,15 +45,20 @@ function App() {
   }
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } =
     useMultistepForm([
-      <UserForm {...data} updateFields={updateFields} />,
-      <AddressForm {...data} updateFields={updateFields} />,
-      <AccountForm {...data} updateFields={updateFields} />,
+      <VideoType {...data} updateFields={updateFields}/>,
+      <VideoDetails {...data} updateFields={updateFields} />,
+      <AddonForm {...data} updateFields={updateFields} />,
+      <VideoLogisticsForm {...data} updateFields={updateFields} />,
+      <VideoPacingToneForm {...data} updateFields={updateFields} />,
+      <VideoUploadForm/>
     ])
 
   function onSubmit(e: FormEvent) {
+    console.log(data)
     e.preventDefault()
     if (!isLastStep) return next()
     alert("Successful Account Creation")
+    
   }
 
   return (
